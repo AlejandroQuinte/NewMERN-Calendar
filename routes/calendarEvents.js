@@ -2,19 +2,15 @@
 //? host + api/calendar
 
 const { Router } = require('express');
-const { check } = require('express-validator')
-const { validarCampos } = require('../middlewares/validar-campos');
-const {
-    getEventos,
-    eliminarEvento,
-} = require('../controllers/events');
 
 const {
+    addNewEventToCalendar,
+    deleteCalendarEvent,
+    getCalendar,
     getCalendarEvent,
     newCalendarEvent,
-    deleteCalendarEvent,
     updateCalendar,
-    addNewEventToCalendar
+    getEventsToCalendar,
 } = require('../controllers/calendarEvents');
 
 const { validarJWT } = require('../middlewares/validar-jwt')
@@ -24,8 +20,14 @@ const router = Router();
 // Todas tienen que pasar por la validacion del jwt
 router.use(validarJWT)
 
+//Obtiene un calendario mediante el ID
+router.get('/:id', getCalendar);
+
 //Obtener todos los calendarios
 router.get('/', getCalendarEvent);
+
+//Obteniendo todos los eventos de ese calendario
+router.get('/event/:id', getEventsToCalendar);
 
 //Crear nuevo calendario
 router.post('/', newCalendarEvent);
